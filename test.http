@@ -1,0 +1,9 @@
+POST http://localhost:8000/matrix-power HTTP/1.1
+content-type: application/json
+
+{
+  "channel_id": "prod",
+  "author": "/dev/null",
+  "content": "testing stuff"
+}
+###
