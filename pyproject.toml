@@ -11,6 +11,7 @@ django = "^5.0.3"
 djangorestframework = "^3.15.0"
 drf-spectacular = "^0.27.1"
 numpy = "^1.26.4"
+apscheduler = "^3.10.4"
 
 
 [tool.poetry.group.dev.dependencies]

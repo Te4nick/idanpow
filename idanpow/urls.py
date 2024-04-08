@@ -21,11 +21,30 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from django.urls import path
-from nppow.views import power_matrix
+from nppow.views import NPMatrixViewSet
 
 urlpatterns = [
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger"),
     path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
-    path("api/v1/matrix/power", power_matrix, name="matrix-power"),
+    path(
+        "api/v1/matrix/power",
+        NPMatrixViewSet.as_view(
+            {
+                "get": "get_pow_matrix_status",
+                "post": "post_pow_matrix",
+            },
+        ),
+        name="matrix_power",
+    ),
+    path(
+        "api/v1/matrix/multiply",
+        NPMatrixViewSet.as_view(
+            {
+                "get": "get_mult_matrix_status",
+                "post": "post_mult_matrix",
+            },
+        ),
+        name="matrix_power",
+    ),
 ]
