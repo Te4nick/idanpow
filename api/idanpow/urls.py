@@ -28,7 +28,7 @@ urlpatterns = [
     path("docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger"),
     path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path(
-        "api/v1/matrix/power",
+        "matrix/power",
         NPMatrixViewSet.as_view(
             {
                 "get": "get_pow_matrix_status",
@@ -38,7 +38,7 @@ urlpatterns = [
         name="matrix_power",
     ),
     path(
-        "api/v1/matrix/multiply",
+        "matrix/multiplication/scalar",
         NPMatrixViewSet.as_view(
             {
                 "get": "get_mult_matrix_status",
