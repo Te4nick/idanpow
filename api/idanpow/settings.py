@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    "corsheaders",
     "nppow.apps.NppowConfig",
 ]
 
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "idanpow.urls"
@@ -88,6 +90,9 @@ SPECTACULAR_SETTINGS = {
 
 WSGI_APPLICATION = "idanpow.wsgi.application"
 
+CORS_ALLOWED_ORIGINS = [
+    "*",
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

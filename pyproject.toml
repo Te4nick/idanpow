@@ -15,6 +15,7 @@ numpy = "^1.26.4"
 apscheduler = "^3.10.4"
 gunicorn = "^22.0.0"
 django-dotenv = "^1.4.2"
+django-cors-headers = "^4.3.1"
 
 
 [tool.poetry.group.dev.dependencies]

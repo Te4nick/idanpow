@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix NumPy Static</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <label for="operation">Matrix:</label>
+        <select name="operation" id="operationSelect" onchange="operationSelect()">
+            <option value="power">Power</option>
+            <option value="multiplication_scalar">Scalar Multiplication</option>
+        </select>
+    </header>
+    <h1>Enter Matrix Size and Values</h1>
+    <div>
+        <label for="MatrixSize">Matrix size:</label>
+        <input name="MatrixSize" onchange="generateMatrix()" id="sizeInput" type="number" min="2" max="10" value="2">
+    </div>
+    <div id="matrixContainer"></div>
+    <div>
+        <label for="Exponent">Exponent:</label>
+        <input id="exponentInput" name="Exponent" type="number" min="2" value="2">
+    </div>
+    <button onclick="submitMatrix(event)" type="submit">Submit Matrix</button>
+    <div id="matrixResultContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>
