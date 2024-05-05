@@ -28,7 +28,7 @@ class SquareMatrixSerializer(serializers.Serializer):
 
 
 class PowerSquareMatrixSerializer(SquareMatrixSerializer):
-    exponent = serializers.IntegerField(min_value=2)  # TODO: max_value=?
+    exponent = serializers.IntegerField(min_value=2, max_value=9_007_199_254_740_991)
 
     # def validate_exponent(self, value):
     #     if value < 1:

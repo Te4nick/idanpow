@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = getenv(key="SECRET_KEY", default="foo")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv(key="DEBUG", default=False)
+DEBUG = bool(int(getenv(key="DEBUG", default=False)))
 
-ALLOWED_HOSTS = getenv(key="ALLOWED_HOSTS", default=["127.0.0.1"]).split()
+ALLOWED_HOSTS = getenv(key="ALLOWED_HOSTS", default="127.0.0.1 [::1]").split()
 
 
 # Application definition

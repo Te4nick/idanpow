@@ -6,15 +6,26 @@ services:
       context: .
       dockerfile: docker/django/Dockerfile
     container_name: django
+    env_file: docker/django/.env
 #    expose:
 #      - 8000
+#    command:
+#      -
     ports:
       - "8000:8000"
+    networks:
+      [ idanpow ]
 
   nginx:
     build: docker/nginx
     container_name: nginx
     ports:
       - "80:80"
+    networks:
+      [ idanpow ]
     depends_on:
       - django
+
+networks:
+  idanpow:
+    name: idanpow
