@@ -26,7 +26,7 @@ SECRET_KEY = getenv(key="SECRET_KEY", default="foo")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(getenv(key="DEBUG", default=False)))
 
-ALLOWED_HOSTS = getenv(key="ALLOWED_HOSTS", default="127.0.0.1 [::1]").split()
+ALLOWED_HOSTS = ["*"]  # getenv(key="ALLOWED_HOSTS", default="127.0.0.1 [::1]").split()
 
 
 # Application definition
@@ -47,12 +47,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "idanpow.urls"

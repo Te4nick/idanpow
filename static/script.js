@@ -1,5 +1,63 @@
 const api_addr = "http://127.0.0.1"
-const api_exp = api_addr + "/matrix/power"
+
+const matrixSizeContainer = document.getElementById('matrixSizeContainer')
+const matrixContainer = document.getElementById('matrixContainer')
+const operandContainer = document.getElementById('operandContainer')
+
+const operationMap = new Map([
+    [
+        "power", 
+        {
+            apiPath: api_addr + "/matrix/power",
+            operandName: "exponent",
+            getBody: function () {
+                const exponent = Number(document.getElementById('exponentInput').value);
+                if (!Number.isInteger(exponent)) {
+                    alert("Exponent must be an integer.")
+                    return null
+                }
+                if (exponent < 2) {
+                    alert("Exponent value must be >= 2.")
+                    return null
+                }
+                return {
+                    "matrix": inputsToMatrix(),
+                    "exponent": exponent
+                }
+            },
+            setLayout: function() {
+                setSquareMatrixLayout()
+                setSquareMatrix()
+                operandContainer.innerHTML = '' +
+                '<label for="Exponent">Exponent:</label>' +
+                '<input id="exponentInput" name="Exponent" type="number" min="2" value="2">'
+            }
+        }
+    ],
+    [
+        "multiplication_scalar", 
+        {
+            apiPath: api_addr + "/matrix/multiplication/scalar",
+            operandName: "scalar",
+            getBody: function () {
+                const val = Number(document.getElementById('scalarInput').value);
+                return {
+                    "matrix": inputsToMatrix(),
+                    "scalar": val
+                }
+            },
+            setLayout: function() {
+                setMatrixLayout()
+                setMatrix()
+                operandContainer.innerHTML = '' +
+                '<label for="Scalar">Scalar:</label>' +
+                '<input id="scalarInput" name="Scalar" type="number" value="2">'
+            }
+        }
+    ],
+])
+
+var currentOperation = document.getElementById('operationSelect').value
 
 async function apiFetchJSON(data, path, method) {
     let req = {
@@ -15,24 +73,59 @@ async function apiFetchJSON(data, path, method) {
 }
 
 function operationSelect() {
-    let selected = document.getElementById('operationSelect').value
-    console.log(selected)
+    currentOperation = operationMap.get(document.getElementById('operationSelect').value)
+    console.log(currentOperation)
+    currentOperation.setLayout()
 }
 
-function generateMatrix() {
-    const size = Number(document.getElementById('sizeInput').value);
-    if (size < 2 || size > 10) {
-        document.getElementById('sizeInput').value = 2
-        alert("Size must be between 2 and 10.");
-        return;
+function setMatrixLayout() {
+    matrixSizeContainer.innerHTML = '' +
+        '<label for="MatrixRows">Matrix size:</label>' +
+        '<input name="MatrixRows" onchange="setMatrix()" id="rowInput" type="number" min="2" max="10" value="2"></input>' +
+        '<label for="MatrixColumns">X</label>' +
+        '<input name="MatrixColumns" onchange="setMatrix()" id="columnInput" type="number" min="2" max="10" value="2"></input>'
+
+}
+
+function setSquareMatrixLayout() {
+    matrixSizeContainer.innerHTML = '' +
+    '<label for="MatrixSize">Matrix size:</label>' +
+    '<input name="MatrixSize" onchange="setSquareMatrix()" id="sizeInput" type="number" min="2" max="10" value="2"></input>'
+}
+
+function setMatrix() {
+    const rows = inputClamp('rowInput', 2, 10)
+    const columns = inputClamp('columnInput', 2, 10)
+    if ( rows && columns) generateMatrix(rows, columns)
+    else {
+        document.getElementById('rowInput').value = 2
+        document.getElementById('columnInput').value = 2
+        generateMatrix(2, 2)
     }
-    
-    const matrixContainer = document.getElementById('matrixContainer');
+}
+
+function setSquareMatrix() {
+    const size = inputClamp('sizeInput', 2, 10)
+    if (size) generateMatrix(size, size)
+    else generateMatrix(2, 2)
+}
+
+function inputClamp(elementId, min, max) {
+    const val = Number(document.getElementById(elementId).value);
+    if (val < min || val > max) {
+        document.getElementById(elementId).value = min
+        alert("Size must be between 2 and 10.");
+        return null;
+    }
+    return val
+}
+
+function generateMatrix(rows, columns) {
     matrixContainer.innerHTML = ''; // Clear previous matrix
     
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < rows; i++) {
         const row = document.createElement('div');
-        for (let j = 0; j < size; j++) {
+        for (let j = 0; j < columns; j++) {
             const input = document.createElement('input');
             input.type = 'number';
             input.name = `cell-${i}-${j}`;
@@ -68,19 +161,7 @@ function matrixToTable(matrix) {
     matrixContainer.appendChild(table);
 }
 
-function submitMatrix(event) {
-    event.preventDefault();
-
-    const exponent = Number(document.getElementById('exponentInput').value);
-    if (!Number.isInteger(exponent)) {
-        alert("Exponent must be an integer.")
-        return
-    }
-    if (exponent < 2) {
-        alert("Exponent value must be >= 2.")
-        return
-    }
-    
+function inputsToMatrix() {
     const inputs = document.querySelectorAll('#matrixContainer input');
     const matrix = [];
     inputs.forEach(input => {
@@ -88,22 +169,25 @@ function submitMatrix(event) {
         if (!matrix[i]) matrix[i] = [];
         matrix[i][j] = Number(input.value);
     });
+    return matrix
+}
+
+function submitMatrix(event) {
+    event.preventDefault();
     
-    window.console.log(matrix);
+    const body = currentOperation.getBody()
+    if (body == null) return
 
     apiFetchJSON(
-        {  
-            "matrix": matrix,
-            "exponent": exponent
-        },
-        api_exp,
+        body,
+        currentOperation.apiPath,
         'POST'
     )
     .then(data => {
-        apiFetchJSON(null, api_exp+"?id="+data.id, 'GET')
+        apiFetchJSON(null, currentOperation.apiPath+"?id="+data.id, 'GET')
             .then(data => matrixToTable(data.result.matrix))
     })
     .catch(error => console.error('Error:', error));
 }
 
-window.onload = generateMatrix
+window.onload = operationSelect
