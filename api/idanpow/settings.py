@@ -90,9 +90,7 @@ SPECTACULAR_SETTINGS = {
 
 WSGI_APPLICATION = "idanpow.wsgi.application"
 
-CORS_ALLOWED_ORIGINS = [
-    "*",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
