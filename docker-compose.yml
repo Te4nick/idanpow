@@ -1,8 +1,8 @@
 version: "3.9"
 
 services:
-  django:
-    container_name: django
+  backend:
+    container_name: backend
     build:
       context: .
       dockerfile: docker/django/Dockerfile
@@ -12,8 +12,8 @@ services:
     networks:
       [ idanpow ]
 
-  nginx:
-    container_name: nginx
+  webserver:
+    container_name: webserver
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
@@ -22,20 +22,20 @@ services:
     networks:
       [ idanpow ]
     depends_on:
-      - django
-      - frontend
+      - backend
 
   frontend:
     container_name: frontend
     image: nginx:alpine3.19-slim
     volumes:
       - ./static:/usr/share/nginx/html
-#    expose:
-#      - 80
     ports:
       - "3000:80"
     networks:
       [ idanpow ]
+    depends_on:
+      - backend
+      - webserver
 
 networks:
   idanpow:
