@@ -74,6 +74,10 @@ class ValidationErrorSerializer(serializers.Serializer):
     )
 
 
+class BadRequestErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField()
+
+
 class GetOperationQuerySerializer(serializers.Serializer):
     id = serializers.UUIDField(required=True)
 
