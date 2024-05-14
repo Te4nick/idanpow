@@ -13,5 +13,5 @@ idanpow API - Integration and Deployment Architecture course project
   ```
 - Run Docker Compose
   ```bash
-  $ docker compose up
+  $ docker compose -p "idanpow" up -d
   ```
