@@ -6,7 +6,6 @@ services:
     build:
       context: .
       dockerfile: docker/django/Dockerfile
-    env_file: docker/django/.env
     expose:
       - 8000
     networks:
@@ -17,8 +16,8 @@ services:
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
-    ports:
-      - "80:80"
+    expose:
+      - 80
     networks:
       [ idanpow ]
     depends_on:
@@ -26,11 +25,13 @@ services:
 
   frontend:
     container_name: frontend
-    image: nginx:alpine3.19-slim
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
     volumes:
-      - ./static:/usr/share/nginx/html
+      - ./static:/var/www/matrix.com/static
     ports:
-      - "3000:80"
+      - "80:80"
     networks:
       [ idanpow ]
     depends_on:
