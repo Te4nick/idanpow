@@ -6,9 +6,11 @@ RUN apk upgrade --no-cache
 
 RUN pip install poetry
 
-COPY ./api/ pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock /app/
 
 RUN poetry config virtualenvs.create false  \
     && poetry install --no-dev
+
+COPY ./api/ /app/
 
 CMD poetry run gunicorn

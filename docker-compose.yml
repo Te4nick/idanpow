@@ -1,32 +1,42 @@
 version: "3.9"
 
 services:
-  django:
+  backend:
+    container_name: backend
     build:
       context: .
       dockerfile: docker/django/Dockerfile
-    container_name: django
-    env_file: docker/django/.env
-#    expose:
-#      - 8000
-#    command:
-#      -
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     networks:
       [ idanpow ]
 
-  nginx:
+  webserver:
+    container_name: webserver
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
-    container_name: nginx
+    expose:
+      - 80
+    networks:
+      [ idanpow ]
+    depends_on:
+      - backend
+
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    volumes:
+      - ./static:/var/www/matrix.com/static
     ports:
       - "80:80"
     networks:
       [ idanpow ]
     depends_on:
-      - django
+      - backend
+      - webserver
 
 networks:
   idanpow:

@@ -1,5 +1,3 @@
-const api_addr = "http://127.0.0.1"
-
 const matrixSizeContainer = document.getElementById('matrixSizeContainer')
 const matrixContainer = document.getElementById('matrixContainer')
 const operandContainer = document.getElementById('operandContainer')
@@ -8,7 +6,7 @@ const operationMap = new Map([
     [
         "power", 
         {
-            apiPath: api_addr + "/matrix/power",
+            apiPath: "/matrix/power",
             operandName: "exponent",
             getBody: function () {
                 const exponent = Number(document.getElementById('exponentInput').value);
@@ -37,7 +35,7 @@ const operationMap = new Map([
     [
         "multiplication_scalar", 
         {
-            apiPath: api_addr + "/matrix/multiplication/scalar",
+            apiPath: "/matrix/multiplication/scalar",
             operandName: "scalar",
             getBody: function () {
                 const val = Number(document.getElementById('scalarInput').value);

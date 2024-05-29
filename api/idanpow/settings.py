@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv(key="SECRET_KEY", default="foo")
+SECRET_KEY = "django-insecure-oka*l*_p8x_thycbb80%5^h(l2l_40r$3ds0$9&rw74^#)-1y4"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(getenv(key="DEBUG", default=False)))
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]  # getenv(key="ALLOWED_HOSTS", default="127.0.0.1 [::1]").split()
 
@@ -90,9 +90,7 @@ SPECTACULAR_SETTINGS = {
 
 WSGI_APPLICATION = "idanpow.wsgi.application"
 
-CORS_ALLOWED_ORIGINS = [
-    "*",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
